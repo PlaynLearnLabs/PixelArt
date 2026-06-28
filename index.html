@@ -145,7 +145,26 @@
             .difficulty-cards-container { flex-direction: column; flex-wrap: nowrap; align-items: center; gap: 15px; }
             .diff-card { width: 100%; max-width: 300px; padding: 15px; }
         }
-    </style>
+
+        .screen {
+            justify-content: flex-start !important;
+            overflow-y: auto !important;
+            padding-top: 80px !important; 
+            padding-bottom: 60px !important;
+        }
+        
+        .panel {
+            margin: auto !important;
+        }
+
+        @media (max-height: 950px) {
+            .panel { padding: 25px !important; }
+            .imaginacion-title { font-size: 2.2rem !important; margin-bottom: 0 !important; }
+            .editor-subtitle { margin-bottom: 10px !important; font-size: 0.9rem !important; }
+            .palette-container { padding: 10px !important; margin-bottom: 15px !important; margin-top: 10px !important; }
+            .btn-3d { margin: 6px !important; font-size: 18px !important; padding: 15px 25px !important; }
+        }
+        </style>
 </head>
 <body>
 
