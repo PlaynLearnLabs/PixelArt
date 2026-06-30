@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Juega y Aprende">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Pixel Art - Premium Edition</title>
     <style>
           :root {
@@ -147,15 +151,13 @@
         }
 
         @media (max-height: 950px) {
-            body { overflow-y: auto !important; height: auto !important; min-height: 100vh; }
-            .screen { overflow-y: visible !important; height: auto !important; min-height: 100vh; padding-top: 60px !important; padding-bottom: 20px !important; justify-content: flex-start !important; }
-            .panel { margin: 20px auto !important; padding: 20px !important; }
-            .imaginacion-title { font-size: 2rem !important; margin-bottom: 0 !important; }
+            .screen { justify-content: flex-start !important; overflow-y: auto !important; padding-top: 80px !important; padding-bottom: 60px !important; }
+            .panel { margin: auto !important; padding: 25px !important; }
+            .imaginacion-title { font-size: 2.2rem !important; margin-bottom: 0 !important; }
             .editor-subtitle { margin-bottom: 10px !important; font-size: 0.9rem !important; }
             .palette-container { padding: 10px !important; margin-bottom: 15px !important; margin-top: 10px !important; }
             .btn-3d { margin: 6px !important; font-size: 16px !important; padding: 12px 20px !important; }
-            
-            .watermark { position: relative !important; bottom: auto !important; margin-top: 10px !important; padding-bottom: 25px !important; }
+            .watermark { position: fixed !important; bottom: 8px !important; }
         }
         
                 .glass-input {
@@ -467,7 +469,19 @@
         function hideAll() { document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden')); }
         function closeModal(id) { playSound('click'); document.getElementById(id).classList.add('hidden'); }
         function returnToMenu() { playSound('click'); hideAll(); document.querySelectorAll('.modal-overlay').forEach(m => m.classList.add('hidden')); document.getElementById('welcome-screen').classList.remove('hidden'); editingLevel = null; }
-        function toggleFullScreen() { playSound('click'); try { if (!document.fullscreenElement) { document.documentElement.requestFullscreen(); } else { if (document.exitFullscreen) document.exitFullscreen(); } } catch(e) {} }
+        function toggleFullScreen() {
+            playSound('click');
+            try {
+                if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                    const docElm = document.documentElement;
+                    if (docElm.requestFullscreen) { docElm.requestFullscreen(); }
+                    else if (docElm.webkitRequestFullscreen) { docElm.webkitRequestFullscreen(); } // Para Mac Safari
+                } else {
+                    if (document.exitFullscreen) { document.exitFullscreen(); }
+                    else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); } // Para Mac Safari
+                }
+            } catch(e) {}
+        }
         function showToast(msg) { const t = document.getElementById('toast-notification'); t.innerText = msg; t.classList.add('show'); setTimeout(() => { t.classList.remove('show'); }, 3000); }
 
         function openDifficultyModal() { playSound('click'); document.getElementById('difficulty-modal').classList.remove('hidden'); }
@@ -560,6 +574,13 @@
                 if (n && (n.style.opacity === "0" || n.style.opacity === "")) { playSound('success'); n.style.opacity = "1"; n.style.pointerEvents = "auto"; if(s) { s.style.opacity = "0"; s.style.pointerEvents = "none"; } }
             }
         }
+        window.addEventListener('load', function() {
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            if (isIOS) {
+                const fsBtn = document.getElementById('fullscreen-btn');
+                if (fsBtn) fsBtn.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
